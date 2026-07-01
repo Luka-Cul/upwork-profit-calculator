@@ -10,109 +10,120 @@
 
 <body>
 
-    <!-- TITLE -->
-    <main class="container">
-        <h1>Upwork profit calculator</h1>
-        <p class="subtitle">See what you actually take home after fees and connects.</p>
+    <!-- Top navigation -->
+    <header class="topbar">
+        <div class="logo">
+            <div class="logo-icon">$</div>
+            <div>
+                <div class="logo-name">take-home</div>
+                <div class="logo-sub">upwork profit, made obvious</div>
+            </div>
+        </div>
+        <p class="topbar-note">Estimate your real take-home pay after Upwork fees and connects.</p>
+    </header>
 
-        <!-- CALCULATOR -->
-        <div class="card">
+    <main class="layout">
 
+        <!-- Calculator inputs -->
+        <div class="panel left-panel">
+
+            <!-- Pricing mode selector -->
             <div class="mode-toggle">
                 <button class="mode-btn active" id="btn-hourly">Hourly</button>
                 <button class="mode-btn" id="btn-fixed">Fixed price</button>
             </div>
 
+            <!-- Hourly project fields -->
             <div id="hourly-fields">
-                <div class="field-row">
-                    <div class="field">
-                        <label for="hourly-rate">Hourly rate (USD)</label>
-                        <div class="input-prefix">
-                            <span>$</span>
-                            <input type="number" id="hourly-rate" value="45" min="1" max="9999" />
-                        </div>
+                <div class="field">
+                    <label for="hourly-rate">Hourly rate (USD)</label>
+                    <div class="input-prefix">
+                        <span>$</span>
+                        <input type="number" id="hourly-rate" value="45" min="1" max="999" />
                     </div>
-                    <div class="field">
-                        <label for="hours">Hours worked</label>
-                        <input type="number" id="hours" value="40" min="1" max="999999" />
-                    </div>
+                </div>
+                <div class="field">
+                    <label for="hours">Hours worked</label>
+                    <input type="number" id="hours" value="40" min="1" max="999" />
                 </div>
             </div>
 
+            <!-- Fixed-price project fields -->
             <div id="fixed-fields" class="hidden">
                 <div class="field">
                     <label for="fixed-price">Project price (USD)</label>
                     <div class="input-prefix">
                         <span>$</span>
-                        <input type="number" id="fixed-price" value="1000" min="1" max="99999999" />
+                        <input type="number" id="fixed-price" value="1000" min="1" max="999999" />
                     </div>
                 </div>
             </div>
 
+            <!-- Fee and connects inputs -->
             <div class="field-row">
                 <div class="field">
                     <label for="fee">Service fee (%)</label>
                     <div class="input-prefix">
                         <span>%</span>
-                        <input type="number" id="fee" value="10" min="0" max="100" step="0.5" />
+                        <input type="number" id="fee" value="10" min="0" max="15" step="0.5" />
                     </div>
                     <span class="hint">Shown when you submit a proposal</span>
                 </div>
                 <div class="field">
                     <label for="connects">Connects spent</label>
-                    <input type="number" id="connects" value="6" min="0" max="99999" />
+                    <input type="number" id="connects" value="6" min="0" max="999" />
                     <span class="hint">Each connect costs $0.15</span>
                 </div>
             </div>
 
+            <!-- Currency selector -->
+            <div class="currency-row">
+                <button class="cur-btn active" data-currency="USD">USD</button>
+                <button class="cur-btn" data-currency="EUR">EUR</button>
+                <button class="cur-btn" data-currency="GBP">GBP</button>
+                <button class="cur-btn" data-currency="BAM">BAM</button>
+                <button class="cur-btn" data-currency="CAD">CAD</button>
+                <button class="cur-btn" data-currency="AUD">AUD</button>
+                <button class="cur-btn" data-currency="CHF">CHF</button>
+                <button class="cur-btn" data-currency="PLN">PLN</button>
+                <button class="cur-btn" data-currency="INR">INR</button>
+            </div>
+
         </div>
 
-        <!-- CURRENCY SELECTOR -->
-        <div class="currency-row">
-            <button class="cur-btn active" data-currency="USD">USD</button>
-            <button class="cur-btn" data-currency="EUR">EUR</button>
-            <button class="cur-btn" data-currency="GBP">GBP</button>
-            <button class="cur-btn" data-currency="BAM">BAM</button>
-            <button class="cur-btn" data-currency="CAD">CAD</button>
-            <button class="cur-btn" data-currency="AUD">AUD</button>
-            <button class="cur-btn" data-currency="CHF">CHF</button>
-            <button class="cur-btn" data-currency="PLN">PLN</button>
-            <button class="cur-btn" data-currency="INR">INR</button>
-        </div>
+        <!-- Calculator results -->
+        <div class="panel right-panel">
 
-        <!-- RESULTS -->
-        <div class="card" id="results-card">
+            <!-- Main take-home total -->
+            <div class="hero">
+                <div class="hero-label">You take home</div>
+                <div class="hero-value" id="stat-net">—</div>
+                <div class="hero-sub">out of <span id="stat-gross">—</span></div>
+            </div>
 
-            <div class="results-grid">
-                <div class="stat highlight">
-                    <div class="stat-label">You take home</div>
-                    <div class="stat-value" id="stat-net">—</div>
+            <!-- Keep-rate progress -->
+            <div class="keep-rate">
+                <div class="keep-rate-header">
+                    <span class="keep-label">Keep rate</span>
+                    <span class="keep-pct" id="stat-rate">—</span>
                 </div>
-                <div class="stat">
-                    <div class="stat-label">Gross contract</div>
-                    <div class="stat-value" id="stat-gross">—</div>
-                </div>
-                <div class="stat danger">
-                    <div class="stat-label">Total deducted</div>
-                    <div class="stat-value" id="stat-deducted">—</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-label">Effective fee rate</div>
-                    <div class="stat-value" id="stat-rate">—</div>
+                <div class="progress-track">
+                    <div class="progress-bar" id="progress-bar"></div>
                 </div>
             </div>
 
+            <!-- Earnings breakdown -->
             <div class="breakdown">
                 <div class="breakdown-row">
                     <span>Gross earnings</span>
                     <span class="pos" id="bd-gross">—</span>
                 </div>
                 <div class="breakdown-row">
-                    <span>Upwork service fee</span>
+                    <span id="bd-fee-label">Service fee</span>
                     <span class="neg" id="bd-fee">—</span>
                 </div>
                 <div class="breakdown-row">
-                    <span>Connects cost</span>
+                    <span id="bd-connects-label">Connects</span>
                     <span class="neg" id="bd-connects">—</span>
                 </div>
                 <div class="breakdown-row total">
@@ -121,10 +132,19 @@
                 </div>
             </div>
 
+            <!-- Total deductions -->
+            <div class="effective-fee">
+                <span class="effective-label">Effective fee</span>
+                <span class="effective-value" id="stat-deducted">—</span>
+            </div>
+
+            <div class="disclaimer">Conversion rates approximate · for planning, not tax filing</div>
+
         </div>
 
     </main>
 
+    <!-- App script -->
     <script src="app.js"></script>
 </body>
 

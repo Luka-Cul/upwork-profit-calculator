@@ -69,8 +69,12 @@ function animateNet(targetUSD) {
     const eased = 1 - Math.pow(1 - progress, 3);
     const current = start + (target - start) * eased;
 
-    document.getElementById('stat-net').textContent =
-      symbol + current.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    document.getElementById("stat-net").textContent =
+      symbol +
+      current.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
 
     if (progress < 1) {
       animationFrame = requestAnimationFrame(step);
@@ -109,11 +113,11 @@ function clamp(id, min, max) {
 
 // Calculate totals and update the page
 function calc() {
-  clamp('hourly-rate', 1, 9999);
-  clamp('hours', 1, 999999);
-  clamp('fixed-price', 1, 99999999);
-  clamp('fee', 0, 100);
-  clamp('connects', 0, 99999);
+  clamp("hourly-rate", 1, 9999);
+  clamp("hours", 1, 999999);
+  clamp("fixed-price", 1, 99999999);
+  clamp("fee", 0, 100);
+  clamp("connects", 0, 99999);
 
   let gross = 0;
 
@@ -144,19 +148,28 @@ function calc() {
     gross > 0 ? ((feeCost + connectsCost) / gross) * 100 : 0;
 
   // Update summary stats
-  animateNet(net);
-  document.getElementById("stat-gross").textContent = fmt(gross);
-  document.getElementById("stat-deducted").textContent = fmt(
-    feeCost + connectsCost,
-  );
-  document.getElementById("stat-rate").textContent =
-    effectiveRate.toFixed(1) + "%";
+  const keepRate = gross > 0 ? (net / gross) * 100 : 0;
 
-  // Update detailed breakdown
+  animateNet(net);
+
+  document.getElementById("stat-gross").textContent = fmt(gross);
+  document.getElementById("stat-rate").textContent = keepRate.toFixed(1) + "%";
+  document.getElementById("progress-bar").style.width =
+    keepRate.toFixed(1) + "%";
+
   document.getElementById("bd-gross").textContent = fmt(gross);
   document.getElementById("bd-fee").textContent = "−" + fmt(feeCost);
+  document.getElementById("bd-fee-label").textContent =
+    "Service fee (" + feePct + "%)";
+
   document.getElementById("bd-connects").textContent = "−" + fmt(connectsCost);
+  document.getElementById("bd-connects-label").textContent =
+    "Connects (" + connects + ")";
+    
   document.getElementById("bd-net").textContent = fmt(net);
+
+  document.getElementById("stat-deducted").textContent =
+    effectiveRate.toFixed(1) + "%";
 }
 
 // Initial render
